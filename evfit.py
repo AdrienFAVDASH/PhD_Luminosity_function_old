@@ -6,7 +6,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import math
 import numpy as np
-import pmap
+#import pmap
 import pickle
 import astropy.io.fits as fits
 #import pyqt_fit.kde
@@ -103,6 +103,18 @@ den_mass_label = r'$\phi(M)\ (h^3 {\rm Mpc}^{-3} {\rm dex}^{-1})$'
 #------------------------------------------------------------------------------
 # Main procedures
 #------------------------------------------------------------------------------
+
+def ev_fit_sim(isim):
+    infile = pd.read_pickle(f'jswml_adrien/GII_sim_{isim}.pkl')
+    outfile = f'jswml_adrien/jswml_GII_sim_{isim}.pkl'
+    ev_fit(infile, outfile)
+
+
+def ev_fit_sim_post(isim):
+    infile = pd.read_pickle(f'jswml_adrien/GII_sim_{isim}.pkl')
+    outfile = f'jswml_adrien/jswml_post_GII_sim_{isim}.pkl'
+    ev_fit(infile, outfile, method='post')
+
 
 def ev_fit(infile, outfile, mlims=(0, 19.8), param='R_PETRO',
            Mmin=-24, Mmax=-12, Mbin=48, dmlim=2,
@@ -895,7 +907,7 @@ def vis_calc(gala, nz, zmin, zstep, V, V_int):
     return S_obs, S_vis
 
 def kcorr(z, coeffs):
-    """K-correction from polynomial fit."""
+    """Reconstruct K-correction from SED fit coeffs."""
 #     return np.polynomial.polynomial.polyval(z - par['z0'], kcoeff)
     
     if np.ndim(coeffs) == 1:
